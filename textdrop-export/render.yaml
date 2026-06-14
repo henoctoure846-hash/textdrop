@@ -1,0 +1,25 @@
+# Render Blueprint - TextDrop
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: textdrop
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: textdrop-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: textdrop-db
+    region: frankfurt
+    plan: free
+    databaseName: textdrop
+    user: textdrop_user
