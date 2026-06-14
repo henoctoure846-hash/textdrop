@@ -29,8 +29,25 @@ export async function GET(
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=3600",
+      "Cache-Control": "public, max-age=3600, s-maxage=3600",
       "X-Robots-Tag": "index, follow",
+      // 🤖 Améliorations pour les IA
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "X-Content-Type-Options": "nosniff",
+      "Content-Disposition": "inline",
+    },
+  });
+}
+
+// 🌐 Permet aux IA et navigateurs de faire des requêtes CORS
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "Access-Control-Allow-Headers": "*",
     },
   });
 }
