@@ -26,7 +26,18 @@ export async function POST(req: NextRequest) {
       })
       .returning();
 
-    const baseUrl = req.nextUrl.origin;
+    // 🔥 Récupère la vraie URL publique (Render, Vercel, etc.)
+    const host =
+      req.headers.get("x-forwarded-host") ||
+      req.headers.get("host") ||
+      req.nextUrl.host;
+
+    const protocol =
+      req.headers.get("x-forwarded-proto") ||
+      (host?.includes("localhost") ? "http" : "https");
+
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`;
 
     return NextResponse.json({
       id: paste.id,
